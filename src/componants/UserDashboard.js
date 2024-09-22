@@ -17,15 +17,18 @@ function UserDashboard() {
     const [loading, setLoading] = useState(true); // Add a loading state
 
 
-console.log('user in dashbard', user)
+
     useEffect(() => {
-        user &&
+        console.log('user in dashbard', user)
+        if(user){
             axios.get(`https://smartcms-backend.onrender.com/get-contacts/${user.email}`)
                 .then(resp => {
+                    console.log("Contacts data:", resp.data);
                     setContacts(resp.data)
                     setLoading(false);
                 })
                 .catch(err => console.log(err))
+            }
     }, [user, location])
 
 
@@ -126,6 +129,10 @@ console.log('user in dashbard', user)
 
 
     }
+
+    if (!user) {
+        return <p>User not logged in. Redirecting...</p>;
+      }
 
     if (loading) {
         return <p>Loading...</p>;  // Show loading state until data is fetched

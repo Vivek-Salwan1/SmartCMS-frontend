@@ -24,16 +24,17 @@ function App() {
     axios.get('https://smartcms-backend.onrender.com/')
       .then(resp => {
         setUser(resp.data)
+        console.log("User from API:", resp.data);
         setLoading(false)
       })
 
       .catch(err => console.log(err))
   }, [])
 
-
-  if (loading) {return <p>Loading...</p> }
+  console.log('user in home', user)
+  if (loading) { return <p>Loading...</p> }
   return (
-    <userContext.Provider value={{user, setUser}}>
+    <userContext.Provider value={{ user, setUser }}>
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -44,7 +45,7 @@ function App() {
 
           {
             user &&
-            <Route path='/user-dashboard' element={<UserDashboard />}></Route>
+            <Route path='/user-dashboard' element={user ? <UserDashboard /> : <Navigate to='/login' />} />
           }
           <Route path='/add-contact' element={<AddContact />}></Route>
           <Route path='/edit-contact/:contactID' element={<EditContact />}></Route>

@@ -18,6 +18,7 @@ function Login() {
         axios.post('https://smartcms-backend.onrender.com/login', { email, password,})
             .then(res => {
                 if (res.data.massage == 'logged in') {
+                    console.log("Login successful, user:", res.data.user);
                     setUser(res.data.user); // Make sure this data comes from the backend
                     navigate('/user-dashboard');
                 }else {
