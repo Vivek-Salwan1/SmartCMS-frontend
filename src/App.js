@@ -31,9 +31,9 @@ function App() {
   }, [])
 
 
-  if (loading) { <p>Loading...</p> }
+  if (loading) {return <p>Loading...</p> }
   return (
-    <userContext.Provider value={user}>
+    <userContext.Provider value={{user, setUser}}>
       <BrowserRouter>
         <Navbar />
         <Routes>

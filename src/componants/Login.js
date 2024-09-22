@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { userContext } from '../App';
 
 
 function Login() {
-   
+    const {setUser} = useContext(userContext)
     const navigate = useNavigate();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -17,7 +18,8 @@ function Login() {
         axios.post('https://smartcms-backend.onrender.com/login', { email, password,})
             .then(res => {
                 if (res.data.massage == 'logged in') {
-                    navigate('/user-dashboard')
+                    setUser(res.data.user); // Make sure this data comes from the backend
+                    navigate('/user-dashboard');
                 }else {
                     setAck(res.data.massage)
                 }

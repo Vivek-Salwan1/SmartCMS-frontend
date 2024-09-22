@@ -9,7 +9,7 @@ import { IoCallOutline } from "react-icons/io5";
 import { IoCheckboxOutline } from "react-icons/io5";
 
 function UserDashboard() {
-    const user = useContext(userContext);
+    const {user} = useContext(userContext);
     const location = useLocation();
     const [searchInput, setSearchInput] = useState();
     const [contacts, setContacts] = useState([]);
