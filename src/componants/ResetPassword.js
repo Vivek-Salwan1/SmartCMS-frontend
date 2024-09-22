@@ -20,7 +20,7 @@ function ResetPassword() {
         e.preventDefault();
         setLoading(true);
 
-        axios.post('http://localhost:3001/reset-password', { email })
+        axios.post('https://smartcms-backend.onrender.com/reset-password', { email })
             .then(resp => {
                 setLoading(false)
                 if (resp.data.massage == 'email sent') {

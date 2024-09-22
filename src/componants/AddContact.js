@@ -17,7 +17,7 @@ function AddContact() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post('http://localhost:3001/save-contact', { name, number, email, useremail:user.email })
+        axios.post('https://smartcms-backend.onrender.com/save-contact', { name, number, email, useremail:user.email })
             .then(resp => {
                 if (resp.data === 'saved') {
                     navigate('/user-dashboard')

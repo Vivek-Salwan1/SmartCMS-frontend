@@ -10,7 +10,7 @@ const [contacts, setContacts] = useState();
 
     useEffect(()=>{
         user &&
-        axios.get(`http://localhost:3001/get-favorite-contacts/${user.email}`)
+        axios.get(`https://smartcms-backend.onrender.com/get-favorite-contacts/${user.email}`)
         .then(resp => setContacts(resp.data))
         .catch(err => console.log(err))
     },[user])

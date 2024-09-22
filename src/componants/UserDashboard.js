@@ -19,7 +19,7 @@ function UserDashboard() {
 
     useEffect(() => {
         user &&
-            axios.get(`http://localhost:3001/get-contacts/${user.email}`)
+            axios.get(`https://smartcms-backend.onrender.com/get-contacts/${user.email}`)
                 .then(resp => setContacts(resp.data))
                 .catch(err => console.log(err))
     }, [user,location])
@@ -27,7 +27,7 @@ function UserDashboard() {
 
     const handleDelete = (contactID) => {
 
-        axios.delete(`http://localhost:3001/delete-contact/${contactID}`)
+        axios.delete(`https://smartcms-backend.onrender.com/delete-contact/${contactID}`)
             .then(resp => {
                 if (resp.data === 'deleted') {
                     setContacts((prevContacts) =>
@@ -40,7 +40,7 @@ function UserDashboard() {
 
     const addToFavorite = (contactID) => {
 
-        axios.put('http://localhost:3001/add-to-favorite', { contactID })
+        axios.put('https://smartcms-backend.onrender.com/add-to-favorite', { contactID })
             .then(resp => {
                 if (resp.data == 'added to favorite') {
                     setContacts(prevContacts =>
@@ -69,7 +69,7 @@ function UserDashboard() {
 
     const removeFromFavorite = (contactID) => {
 
-        axios.put('http://localhost:3001/remove-from-favorite', { contactID })
+        axios.put('https://smartcms-backend.onrender.com/remove-from-favorite', { contactID })
             .then(resp => {
                 if (resp.data == 'removed from favorite') {
                     setContacts(prevContacts =>
@@ -101,7 +101,7 @@ function UserDashboard() {
 
 const deleteSelectedContact = ()=>{
 
-    axios.put('http://localhost:3001/delete-selected-contact', {selectedContacts})
+    axios.put('https://smartcms-backend.onrender.com/delete-selected-contact', {selectedContacts})
     .then(resp => {
         if(resp.data === 'deleted'){
             setContacts(prevContacts => prevContacts.filter(contact => !contact.selected));

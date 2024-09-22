@@ -14,7 +14,7 @@ function EditContact() {
 
     useEffect(() => {
 
-        axios.get(`http://localhost:3001/getContactById/${contactID}`)
+        axios.get(`https://smartcms-backend.onrender.com/getContactById/${contactID}`)
             .then(resp => {
                 setName(resp.data.name)
                 setNumber(resp.data.number)
@@ -27,7 +27,7 @@ function EditContact() {
     const handleEdit = (e) => {
         e.preventDefault();
     
-        axios.put('http://localhost:3001/edit-contact', {name,number,email,contactID})
+        axios.put('https://smartcms-backend.onrender.com/edit-contact', {name,number,email,contactID})
         .then(resp => navigate('/user-dashboard'))
         .catch(err => console.log(err))
 
