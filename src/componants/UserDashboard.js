@@ -3,26 +3,30 @@ import profile from '../profile.png'
 import { Link, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { userContext } from '../App';
-import { MdFavorite, MdFavoriteBorder, MdCheckBoxOutlineBlank  } from 'react-icons/md'
+import { MdFavorite, MdFavoriteBorder, MdCheckBoxOutlineBlank } from 'react-icons/md'
 import { CiSearch } from "react-icons/ci";
 import { IoCallOutline } from "react-icons/io5";
 import { IoCheckboxOutline } from "react-icons/io5";
 
 function UserDashboard() {
-    const {user} = useContext(userContext);
+    const { user } = useContext(userContext);
     const location = useLocation();
     const [searchInput, setSearchInput] = useState();
     const [contacts, setContacts] = useState([]);
     const [selectedContacts, setSelectedContacts] = useState([])
+    const [loading, setLoading] = useState(true); // Add a loading state
 
 
-
+console.log('user in dashbard', user)
     useEffect(() => {
         user &&
             axios.get(`https://smartcms-backend.onrender.com/get-contacts/${user.email}`)
-                .then(resp => setContacts(resp.data))
+                .then(resp => {
+                    setContacts(resp.data)
+                    setLoading(false);
+                })
                 .catch(err => console.log(err))
-    }, [user,location])
+    }, [user, location])
 
 
     const handleDelete = (contactID) => {
@@ -58,7 +62,7 @@ function UserDashboard() {
 
     const handleSearch = (e) => {
         // find contact that matched search input
-        const searchedContact = contacts.filter(contact => contact.name == searchInput || contact.number == searchInput || contact.email ==searchInput);
+        const searchedContact = contacts.filter(contact => contact.name == searchInput || contact.number == searchInput || contact.email == searchInput);
         // console.log('searched contact' + searchedContact)
         setContacts(searchedContact);
 
@@ -85,42 +89,48 @@ function UserDashboard() {
     }
 
 
-    const handleSelect = (contactID)=>{
-        
+    const handleSelect = (contactID) => {
+
         setContacts(prevContacts =>
             prevContacts.map(contact =>
                 contact._id === contactID ? { ...contact, selected: !contact.selected } : contact
             )
-        )}
+        )
+    }
 
-    useEffect(()=>{
-            const   selected = contacts.filter(contact => contact.selected === true);
-            setSelectedContacts(selected)       
-},[contacts])
-
-
-const deleteSelectedContact = ()=>{
-
-    axios.put('https://smartcms-backend.onrender.com/delete-selected-contact', {selectedContacts})
-    .then(resp => {
-        if(resp.data === 'deleted'){
-            setContacts(prevContacts => prevContacts.filter(contact => !contact.selected));
-
-        }
-    })
-    .catch(err => console.log(err))
+    useEffect(() => {
+        const selected = contacts.filter(contact => contact.selected === true);
+        setSelectedContacts(selected)
+    }, [contacts])
 
 
-}
+    const deleteSelectedContact = () => {
 
-  const exportCSV = ()=>{
-    // console.log('contacts '+contacts)
+        axios.put('https://smartcms-backend.onrender.com/delete-selected-contact', { selectedContacts })
+            .then(resp => {
+                if (resp.data === 'deleted') {
+                    setContacts(prevContacts => prevContacts.filter(contact => !contact.selected));
 
-    
+                }
+            })
+            .catch(err => console.log(err))
+
+
+    }
+
+    const exportCSV = () => {
+        // console.log('contacts '+contacts)
 
 
 
-  }
+
+
+    }
+
+    if (loading) {
+        return <p>Loading...</p>;  // Show loading state until data is fetched
+    }
+
 
     return (
         <div className="dashboard-container">
@@ -135,7 +145,7 @@ const deleteSelectedContact = ()=>{
                 <div style={{ display: 'flex', justifyContent: 'space-between' }} className="header-fields">
                     <h2>Contact List</h2>
                     {
-                        selectedContacts.length > 0 && 
+                        selectedContacts.length > 0 &&
                         <button onClick={deleteSelectedContact}>Delete Selected Contacts</button>
                     }
                     <p>
@@ -154,54 +164,54 @@ const deleteSelectedContact = ()=>{
                             <th>Actions</th>
                             <th>Add to Favorite</th>
                             <th>Tap to Call</th>
-                     
+
                         </tr>
                     </thead>
 
 
 
                     {
-                            contacts && 
-                            contacts.map((contact, index) => {
-                                return (
-                                    <tbody key={index}>
-                                        <tr>
-                                            {
+                        contacts &&
+                        contacts.map((contact, index) => {
+                            return (
+                                <tbody key={index}>
+                                    <tr>
+                                        {
                                             contact.selected === true ?
-                                            <td> <i onClick={()=>handleSelect(contact._id)}> <IoCheckboxOutline/> </i> </td>
-                                            :
-                                            <td> <i onClick={()=>handleSelect(contact._id)} > <MdCheckBoxOutlineBlank/> </i> </td>
-                                            }
-               
-                                            
-                                            <td>{contact.name}</td>
-                                            <td>{contact.number}</td>
-                                            <td>{contact.email}</td>
-                                            <td>
-                                                <Link to={`/edit-contact/${contact._id}`}>  <button className="action-button edit">Edit</button></Link>
-                                                <button onClick={() => handleDelete(contact._id)} className="action-button delete">Delete</button>
-                                            </td>
-                                            {
-                                                contact.favorite === false ?
-                                                    <td onClick={() => addToFavorite(contact._id)}> <span style={{ cursor: 'pointer' }}> <MdFavoriteBorder /></span> </td>
-                                                    :
-                                                    <td onClick={() => removeFromFavorite(contact._id)} > <span style={{ cursor: 'pointer' }}> <MdFavorite /></span> </td>
-                                            }
-                                            
-                                            <td> <a href={`tel:+91${contact.number}`}><i> <IoCallOutline/> </i> </a> </td>
-                                        </tr>
-                                    
+                                                <td> <i onClick={() => handleSelect(contact._id)}> <IoCheckboxOutline /> </i> </td>
+                                                :
+                                                <td> <i onClick={() => handleSelect(contact._id)} > <MdCheckBoxOutlineBlank /> </i> </td>
+                                        }
 
-                                    </tbody>
-                                )
-                            })
+
+                                        <td>{contact.name}</td>
+                                        <td>{contact.number}</td>
+                                        <td>{contact.email}</td>
+                                        <td>
+                                            <Link to={`/edit-contact/${contact._id}`}>  <button className="action-button edit">Edit</button></Link>
+                                            <button onClick={() => handleDelete(contact._id)} className="action-button delete">Delete</button>
+                                        </td>
+                                        {
+                                            contact.favorite === false ?
+                                                <td onClick={() => addToFavorite(contact._id)}> <span style={{ cursor: 'pointer' }}> <MdFavoriteBorder /></span> </td>
+                                                :
+                                                <td onClick={() => removeFromFavorite(contact._id)} > <span style={{ cursor: 'pointer' }}> <MdFavorite /></span> </td>
+                                        }
+
+                                        <td> <a href={`tel:+91${contact.number}`}><i> <IoCallOutline /> </i> </a> </td>
+                                    </tr>
+
+
+                                </tbody>
+                            )
+                        })
 
                     }
 
                 </table><br />
-                <div style={{display:'flex', justifyContent:'right'}}>
-                
-                <button onClick={exportCSV}>Export CSV</button>
+                <div style={{ display: 'flex', justifyContent: 'right' }}>
+
+                    <button onClick={exportCSV}>Export CSV</button>
 
                 </div>
             </div>
