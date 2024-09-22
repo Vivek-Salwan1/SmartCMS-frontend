@@ -5,7 +5,7 @@ import axios from 'axios';
 
 
 function Navbar() {
-    const user = useContext(userContext)
+    const {user} = useContext(userContext)
     const navigate = useNavigate();
 
     const handleLogout = () => {
