@@ -18,7 +18,6 @@ function Login() {
             .then(res => {
                 if (res.data.massage == 'logged in') {
                     navigate('/user-dashboard')
-                    window.location.reload();
                 }else {
                     setAck(res.data.massage)
                 }
