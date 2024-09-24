@@ -17,12 +17,14 @@ function AddContact() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post('https://smartcms-backend.onrender.com/save-contact', { name, number, email, useremail:user.email })
+        axios.post('https://smartcms-backend-production.up.railway.app/save-contact', { name, number, email, useremail:user.email })
             .then(resp => {
                 if (resp.data === 'saved') {
+                    console.log('contact saved')
                     navigate('/user-dashboard')
                     
                 } else {
+                    console.log('not saved')
                     setAck(resp.data)
                 }
             })

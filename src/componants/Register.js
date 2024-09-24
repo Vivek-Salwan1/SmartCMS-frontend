@@ -15,7 +15,7 @@ function Register() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+                       
         axios.post('https://smartcms-backend-production.up.railway.app/register', { name, email, password})
             .then(resp => {
                 if (resp.data.massage == 'registered') {

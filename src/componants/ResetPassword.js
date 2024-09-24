@@ -20,7 +20,7 @@ function ResetPassword() {
         e.preventDefault();
         setLoading(true);
 
-        axios.post('https://smartcms-backend.onrender.com/reset-password', { email })
+        axios.post('https://smartcms-backend-production.up.railway.app/reset-password', { email })
             .then(resp => {
                 setLoading(false)
                 if (resp.data.massage == 'email sent') {
@@ -45,7 +45,7 @@ function ResetPassword() {
     }
 
     const handlePassChange = () => {
-        axios.put('http://localhost:3001/change-password', { newPassword, email })
+        axios.put('https://smartcms-backend-production.up.railway.app/change-password', { newPassword, email })
             .then(resp => {
                 if(resp.data.massage == 'Password Changed Successfully'){
                     alert('Password Changed Successfully')

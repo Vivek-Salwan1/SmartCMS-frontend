@@ -12,7 +12,7 @@ function Navbar() {
 
 
         axios.defaults.withCredentials = true
-        axios.get('https://smartcms-backend.onrender.com/logout')
+        axios.get('smartcms-backend-production.up.railway.app/logout')
             .then(resp => {
                 if (resp.data == 'success') {
                     navigate('/')
