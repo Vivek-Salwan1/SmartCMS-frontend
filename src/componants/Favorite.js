@@ -4,7 +4,7 @@ import axios from 'axios'
 import { userContext } from '../App'
 
 function Favorite() {
-const user = useContext(userContext)
+const {user} = useContext(userContext)
 
 const [contacts, setContacts] = useState();
 
