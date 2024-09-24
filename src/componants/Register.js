@@ -7,6 +7,7 @@ function Register() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [ack, setAck] = useState();
+    const [loading, setLoading] = useState(null);
     const [showAck, setShowAck] = useState(true);
     const navigate = useNavigate();
 
@@ -15,9 +16,10 @@ function Register() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-                       
+        setLoading(true)      
         axios.post('https://smartcms-backend-production.up.railway.app/register', { name, email, password})
             .then(resp => {
+                setLoading(false)
                 if (resp.data.massage == 'registered') {
                     navigate('/login')
                 }
@@ -51,7 +53,13 @@ function Register() {
                 <label htmlFor="name">password :</label>
                 <input type="text" name='name' onChange={e => setPassword(e.target.value)} required /> <br />
 
+              {
+                loading ?
+                <div className="loading"> </div> 
+                :
                 <button type='submit'>Sign Up</button>
+
+              } 
             </form>
             {
                 showAck &&
