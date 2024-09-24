@@ -12,9 +12,10 @@ function Navbar() {
 
 
         axios.defaults.withCredentials = true
-        axios.get('smartcms-backend-production.up.railway.app/logout')
+        axios.get('https://smartcms-backend-production.up.railway.app/logout')
             .then(resp => {
                 if (resp.data == 'success') {
+                    console.log('logged out')
                     navigate('/')
                     window.location.reload();
                 }
