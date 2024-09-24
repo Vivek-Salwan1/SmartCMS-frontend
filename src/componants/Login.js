@@ -10,13 +10,15 @@ function Login() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [ack, setAck] = useState();
+    const [loading, setLoading] = useState(null)
 
     const handleLogin = (e) => {
         e.preventDefault();
-    
+        setLoading(true)
         axios.defaults.withCredentials = true;
         axios.post('https://smartcms-backend-production.up.railway.app/login', { email, password })
             .then(res => {
+                setLoading(false)
                 if (res.data.massage === 'logged in') {
                     console.log("Login successful, user:", res.data.user); // Check if user is present
                     setUser(res.data.user);  // Set user from the response
@@ -43,7 +45,13 @@ function Login() {
 
                 <Link to='/reset-password'>  <p style={{ color: 'rgb(163, 163, 253)' }}>Forgot Password</p> </Link>
 
-                <button type='submit'>Login</button>
+                {
+                    loading ?
+                    <div className="loading"></div>
+                    :
+                    <button type='submit'>Login</button>
+                }
+              
                 <h5 style={{ textAlign: 'center' }}>{ack && ack}</h5>
             </form>
         </div>

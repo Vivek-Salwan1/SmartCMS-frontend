@@ -14,29 +14,33 @@ function UserDashboard() {
     const [searchInput, setSearchInput] = useState();
     const [contacts, setContacts] = useState([]);
     const [selectedContacts, setSelectedContacts] = useState([])
-    const [loading, setLoading] = useState(true); // Add a loading state
+    const [loading, setLoading] = useState(null); // Add a loading state
 
 
 
     useEffect(() => {
-        console.log('user in dashbard', user.email)
-        if(user){
+        // console.log('user in dashbard', user.email)
+        setLoading(true)
+        if (user) {
             axios.get(`https://smartcms-backend-production.up.railway.app/get-contacts/${user.email}`)
                 .then(resp => {
+                    setLoading(false);
                     console.log("Contacts data:", resp.data);
                     setContacts(resp.data)
-                    setLoading(false);
+
                 })
                 .catch(err => console.log(err))
-            }
+        }
     }, [user, location])
 
 
     const handleDelete = (contactID) => {
-
+        setLoading(true)
         axios.delete(`https://smartcms-backend-production.up.railway.app/delete-contact/${contactID}`)
             .then(resp => {
+                setLoading(false)
                 if (resp.data === 'deleted') {
+                    console.log('deleted')
                     setContacts((prevContacts) =>
                         prevContacts.filter((contact) => contact._id !== contactID)
                     );
@@ -46,9 +50,10 @@ function UserDashboard() {
     }
 
     const addToFavorite = (contactID) => {
-
+        setLoading(true)
         axios.put('https://smartcms-backend-production.up.railway.app/add-to-favorite', { contactID })
             .then(resp => {
+                setLoading(false)
                 if (resp.data == 'added to favorite') {
                     console.log('added to favoirate')
                     setContacts(prevContacts =>
@@ -76,9 +81,10 @@ function UserDashboard() {
     // console.log(searchInput)
 
     const removeFromFavorite = (contactID) => {
-
+        setLoading(true)
         axios.put('https://smartcms-backend-production.up.railway.app/remove-from-favorite', { contactID })
             .then(resp => {
+                setLoading(false)
                 if (resp.data == 'removed from favorite') {
                     setContacts(prevContacts =>
                         prevContacts.map(contact =>
@@ -109,11 +115,13 @@ function UserDashboard() {
 
 
     const deleteSelectedContact = () => {
-
+        setLoading(true)
         axios.put('https://smartcms-backend-production.up.railway.app/delete-selected-contact', { selectedContacts })
             .then(resp => {
+                setLoading(false)
                 if (resp.data === 'deleted') {
                     setContacts(prevContacts => prevContacts.filter(contact => !contact.selected));
+                    console.log('selected deleted')
 
                 }
             })
@@ -133,7 +141,7 @@ function UserDashboard() {
 
     if (!user) {
         return <p>User not logged in. Redirecting...</p>;
-      }
+    }
 
     if (loading) {
         return <p>Loading...</p>;  // Show loading state until data is fetched
@@ -197,14 +205,26 @@ function UserDashboard() {
                                         <td>{contact.email}</td>
                                         <td>
                                             <Link to={`/edit-contact/${contact._id}`}>  <button className="action-button edit">Edit</button></Link>
-                                            <button onClick={() => handleDelete(contact._id)} className="action-button delete">Delete</button>
+                                            {
+                                                loading ?
+                                                    <div className="loading"></div>
+                                                    :
+                                                    <button onClick={() => handleDelete(contact._id)} className="action-button delete">Delete</button>
+                                            }
+
                                         </td>
                                         {
-                                            contact.favorite === false ?
-                                                <td onClick={() => addToFavorite(contact._id)}> <span style={{ cursor: 'pointer' }}> <MdFavoriteBorder /></span> </td>
-                                                :
-                                                <td onClick={() => removeFromFavorite(contact._id)} > <span style={{ cursor: 'pointer' }}> <MdFavorite /></span> </td>
+                                            loading ? (
+                                                <td><div className="loading"></div></td>
+                                            ) : (
+                                                <td onClick={() => contact.favorite ? removeFromFavorite(contact._id) : addToFavorite(contact._id)}>
+                                                    <span style={{ cursor: 'pointer' }}>
+                                                        {contact.favorite ? <MdFavorite /> : <MdFavoriteBorder />}
+                                                    </span>
+                                                </td>
+                                            )
                                         }
+
 
                                         <td> <a href={`tel:+91${contact.number}`}><i> <IoCallOutline /> </i> </a> </td>
                                     </tr>
