@@ -32,7 +32,15 @@ function App() {
   }, [])
 
   console.log('user in home', user)
-  if (loading) { return <p>Loading...</p> }
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div className="loader"></div>
+      </div>
+    );
+  }
+
+
   return (
     <userContext.Provider value={{ user, setUser }}>
       <BrowserRouter>
