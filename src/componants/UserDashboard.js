@@ -19,9 +19,9 @@ function UserDashboard() {
 
 
     useEffect(() => {
-        console.log('user in dashbard', user)
+        console.log('user in dashbard', user.email)
         if(user){
-            axios.get(`https://smartcms-backend.onrender.com/get-contacts/${user.email}`)
+            axios.get(`https://smartcms-backend-production.up.railway.app/get-contacts/${user.email}`)
                 .then(resp => {
                     console.log("Contacts data:", resp.data);
                     setContacts(resp.data)
@@ -34,7 +34,7 @@ function UserDashboard() {
 
     const handleDelete = (contactID) => {
 
-        axios.delete(`https://smartcms-backend.onrender.com/delete-contact/${contactID}`)
+        axios.delete(`https://smartcms-backend-production.up.railway.app/delete-contact/${contactID}`)
             .then(resp => {
                 if (resp.data === 'deleted') {
                     setContacts((prevContacts) =>
@@ -47,7 +47,7 @@ function UserDashboard() {
 
     const addToFavorite = (contactID) => {
 
-        axios.put('https://smartcms-backend.onrender.com/add-to-favorite', { contactID })
+        axios.put('https://smartcms-backend-production.up.railway.app/add-to-favorite', { contactID })
             .then(resp => {
                 if (resp.data == 'added to favorite') {
                     setContacts(prevContacts =>
@@ -76,7 +76,7 @@ function UserDashboard() {
 
     const removeFromFavorite = (contactID) => {
 
-        axios.put('https://smartcms-backend.onrender.com/remove-from-favorite', { contactID })
+        axios.put('https://smartcms-backend-production.up.railway.app/remove-from-favorite', { contactID })
             .then(resp => {
                 if (resp.data == 'removed from favorite') {
                     setContacts(prevContacts =>
@@ -109,7 +109,7 @@ function UserDashboard() {
 
     const deleteSelectedContact = () => {
 
-        axios.put('https://smartcms-backend.onrender.com/delete-selected-contact', { selectedContacts })
+        axios.put('https://smartcms-backend-production.up.railway.app/delete-selected-contact', { selectedContacts })
             .then(resp => {
                 if (resp.data === 'deleted') {
                     setContacts(prevContacts => prevContacts.filter(contact => !contact.selected));

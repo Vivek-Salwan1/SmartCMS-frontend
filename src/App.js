@@ -21,7 +21,7 @@ function App() {
 
   axios.defaults.withCredentials = true
   useEffect(() => {
-    axios.get('https://smartcms-backend.onrender.com/')
+    axios.get('https://smartcms-backend-production.up.railway.app/')
       .then(resp => {
         setUser(resp.data)
         console.log("User from API:", resp.data);

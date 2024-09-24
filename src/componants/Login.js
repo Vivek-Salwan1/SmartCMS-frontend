@@ -13,20 +13,21 @@ function Login() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-
-        axios.defaults.withCredentials = true
-        axios.post('https://smartcms-backend.onrender.com/login', { email, password,})
+    
+        axios.defaults.withCredentials = true;
+        axios.post('https://smartcms-backend-production.up.railway.app/login', { email, password })
             .then(res => {
-                if (res.data.massage == 'logged in') {
-                    console.log("Login successful, user:", res.data.user);
-                    setUser(res.data.user); // Make sure this data comes from the backend
+                if (res.data.massage === 'logged in') {
+                    console.log("Login successful, user:", res.data.user); // Check if user is present
+                    setUser(res.data.user);  // Set user from the response
                     navigate('/user-dashboard');
-                }else {
-                    setAck(res.data.massage)
+                } else {
+                    setAck(res.data.massage);
                 }
             })
-            .catch(err => console.log(err))
-    }
+            .catch(err => console.log(err));
+    };
+    
  
     return (
         <div className='loginPage'>
