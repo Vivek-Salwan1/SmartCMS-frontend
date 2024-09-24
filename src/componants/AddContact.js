@@ -6,7 +6,7 @@ import { userContext } from '../App';
 
 function AddContact() {
 
-    const user = useContext(userContext);
+    const {user} = useContext(userContext);
 
     const navigate = useNavigate();
     const [name, setName] = useState('');
@@ -14,6 +14,8 @@ function AddContact() {
     const [email, setEmail] = useState('');
 
     const [ack, setAck] = useState();
+
+    console.log('useremail', user.email)
     const handleSubmit = (e) => {
         e.preventDefault();
 

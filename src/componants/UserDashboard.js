@@ -50,6 +50,7 @@ function UserDashboard() {
         axios.put('https://smartcms-backend-production.up.railway.app/add-to-favorite', { contactID })
             .then(resp => {
                 if (resp.data == 'added to favorite') {
+                    console.log('added to favoirate')
                     setContacts(prevContacts =>
                         prevContacts.map(contact =>
                             contact._id === contactID
