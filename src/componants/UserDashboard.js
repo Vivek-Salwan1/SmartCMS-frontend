@@ -19,7 +19,7 @@ function UserDashboard() {
 
 
     useEffect(() => {
-        // console.log('user in dashbard', user.email)
+        console.log('user in dashbard', user.email,user.name)
         setLoading(true)
         if (user) {
             axios.get(`https://smartcms-backend-production.up.railway.app/get-contacts/${user.email}`)
@@ -130,23 +130,11 @@ function UserDashboard() {
 
     }
 
-    const exportCSV = () => {
-        // console.log('contacts '+contacts)
 
-
-
-
-
-    }
 
     if (!user) {
         return <p>User not logged in. Redirecting...</p>;
     }
-
-    if (loading) {
-        return <p>Loading...</p>;  // Show loading state until data is fetched
-    }
-
 
     return (
         <div className="dashboard-container">
@@ -237,11 +225,7 @@ function UserDashboard() {
                     }
 
                 </table><br />
-                <div style={{ display: 'flex', justifyContent: 'right' }}>
-
-                    <button onClick={exportCSV}>Export CSV</button>
-
-                </div>
+            
             </div>
         </div>
     )
@@ -252,7 +236,7 @@ export default UserDashboard
 
 export function Sidebar() {
 
-    const user = useContext(userContext);
+    const {user} = useContext(userContext);
 
     return (
         <div className="sidebar">

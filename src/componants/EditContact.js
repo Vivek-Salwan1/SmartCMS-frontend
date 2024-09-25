@@ -10,12 +10,14 @@ function EditContact() {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(null)
 
 
     useEffect(() => {
-
+        setLoading(true)
         axios.get(`https://smartcms-backend-production.up.railway.app/getContactById/${contactID}`)
             .then(resp => {
+                setLoading(false)
                 setName(resp.data.name)
                 setNumber(resp.data.number)
                 setEmail(resp.data.email)
@@ -26,9 +28,12 @@ function EditContact() {
 
     const handleEdit = (e) => {
         e.preventDefault();
-    
+        setLoading(true)
         axios.put('https://smartcms-backend-production.up.railway.app/edit-contact', {name,number,email,contactID})
-        .then(resp => navigate('/user-dashboard'))
+        .then(resp => {
+            setLoading(false)
+            navigate('/user-dashboard')
+    })
         .catch(err => console.log(err))
 
     }
@@ -49,7 +54,7 @@ function EditContact() {
             <div className="main-content">
                 <div className="add-contact-form-container">
                     <h2>Edit Contact</h2>
-
+                    
                     <form className="add-contact-form" >
 
                         <div className="form-group">
@@ -65,7 +70,12 @@ function EditContact() {
                             <input type="email" id="email" name="email" value={email} onChange={e => setEmail(e.target.value)} />
                         </div>
                         <div className="form-actions">
+                            {
+                            loading ?
+                            <div className="loading"></div> :
                             <button onClick={handleEdit} type="submit" className="save-button">Save</button>
+                            }
+                        
                             <button onClick={handleCancel} type="button" className="cancel-button">Cancel</button>
                         </div>
                     </form>

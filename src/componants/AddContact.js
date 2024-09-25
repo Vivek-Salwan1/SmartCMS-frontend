@@ -12,15 +12,17 @@ function AddContact() {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(null)
 
     const [ack, setAck] = useState();
 
     console.log('useremail', user.email)
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        setLoading(true)
         axios.post('https://smartcms-backend-production.up.railway.app/save-contact', { name, number, email, useremail:user.email })
             .then(resp => {
+                setLoading(false)
                 if (resp.data === 'saved') {
                     console.log('contact saved')
                     navigate('/user-dashboard')
@@ -62,7 +64,12 @@ function AddContact() {
                         </div>
 
                         <div className="form-actions">
-                            <button type="submit" className="save-button">Save</button>
+                            {
+                                loading ?
+                                <div className="loading"></div> :
+                                <button type="submit" className="save-button">Save</button>
+
+                            }
                             <button type="button" className="cancel-button">Cancel</button>
                         </div>
                         {ack && <p>{ack}</p>}
